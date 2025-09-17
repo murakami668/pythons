@@ -1,3 +1,5 @@
+import datetime
+import time
 """ 累乗 (num ** exp) % modを返す。 """
 def ipow(num, exp, mod):
     msk = 1
@@ -96,6 +98,9 @@ dgtlen  = 11
 serno   = 0
 stopcnt = 40000000
 primcnt = 0
+start_time = time.perf_counter_ns()
+bgntm = datetime.datetime.now()
+print("START " + str(bgntm)[0:19])
 retn  = genperm(dgtlen, 1)
 while retn:
     number = 0
@@ -122,3 +127,8 @@ while retn:
         break
     retn = genperm(dgtlen, 0)
 print("\nprimcnt=%d,maxSer=%d" % (primcnt, serno))
+endtm = datetime.datetime.now()
+proc_time = time.perf_counter_ns() - start_time
+print("FINISH " + str(endtm)[0:19])
+diftm = endtm - bgntm
+print("PROCESS TIME %d sec [precise:%d msec]" % (diftm.seconds, proc_time//1000000))
