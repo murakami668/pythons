@@ -100,7 +100,7 @@ serno   = 1
 start_time = time.perf_counter_ns()
 bgntm = datetime.datetime.now()
 print("START " + str(bgntm)[0:19])
-print("twins=", twins, end='')
+print("twins=%d" % twins, end='')
 """ 初期順列の表示 """
 number = is_prime(digit, twins)
 if number:
@@ -108,6 +108,9 @@ if number:
     #print(digit, " ", number)
 """次の順列を生成し、表示を繰り返す """
 while genperm(digit, dgtlen):
+    # 重複回避
+    if digit.index(10) < digit.index(twins):
+        continue
     if (serno % 20000) == 1:
         if (serno % 1000000) == 1:
             print()
