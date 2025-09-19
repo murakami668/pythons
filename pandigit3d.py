@@ -87,7 +87,7 @@ def main():
     dgtlen = len(digit)
     primcnt = 0
     serno   = 1
-    #stopcnt = 400
+    stopcnt = 400
     args = sys.argv
     if len(args) < 2:
         twins = 1
@@ -97,6 +97,8 @@ def main():
         else:
             print("重複を許す数字を指定してください。")
             exit(0)
+    if len(args) == 3 and args[2].isdigit():
+        stopcnt = int(args[2])
     start_time = time.perf_counter_ns()
     bgntm = datetime.datetime.now()
     print("START " + str(bgntm)[0:19])
@@ -105,7 +107,7 @@ def main():
     number = 1234567890+twins
     if is_prime(number):
         primcnt += 1
-        #print(digit, " ", number)
+        print(digit, " ", number)
     """次の順列を生成し、表示を繰り返す """
     while genperm(digit, dgtlen):
         # 重複回避
@@ -125,9 +127,9 @@ def main():
                number += twins
         if is_prime(number):
             primcnt += 1
-            #print(digit, " ", number)
-        #if serno >= stopcnt:
-        #    break
+            print(digit, " ", number)
+        if serno >= stopcnt:
+            break
     print("\nprimcnt=%d,maxSer=%d" % (primcnt, serno))
     endtm = datetime.datetime.now()
     proc_time = time.perf_counter_ns() - start_time
