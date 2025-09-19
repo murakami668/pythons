@@ -1,3 +1,4 @@
+import sys
 import datetime
 import time
 """ 累乗 (num ** exp) % modを返す。 """
@@ -90,41 +91,53 @@ def genperm(digit, dgtlen):
         jjj -= 1
     return 1
 
-digit  = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] # 順列を生成したい要素
-dgtlen = len(digit)
-twins  = 8   # 1,2,4,5,7,8 3の倍数以外
-number = 0
-primcnt = 0
-serno   = 1
-#stopcnt = 400
-start_time = time.perf_counter_ns()
-bgntm = datetime.datetime.now()
-print("START " + str(bgntm)[0:19])
-print("twins=%d" % twins, end='')
-""" 初期順列の表示 """
-number = is_prime(digit, twins)
-if number:
-    primcnt += 1
-    #print(digit, " ", number)
-"""次の順列を生成し、表示を繰り返す """
-while genperm(digit, dgtlen):
-    # 重複回避
-    if digit.index(10) < digit.index(twins):
-        continue
-    if (serno % 20000) == 1:
-        if (serno % 1000000) == 1:
-            print()
-        print("*", end='')
-    serno += 1
+def main():
+    digit  = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] # 順列を生成したい要素
+    dgtlen = len(digit)
+    number = 0
+    primcnt = 0
+    serno   = 1
+    #stopcnt = 400
+    args = sys.argv
+    if len(args)<2:
+        twins = 1
+    else:
+        if args[1].isdigit():
+            twins = int(args[1])
+        else:
+            print("重複を許す数字を指定してください。")
+            exit(0)
+    start_time = time.perf_counter_ns()
+    bgntm = datetime.datetime.now()
+    print("START " + str(bgntm)[0:19])
+    print("twins=%d" % twins, end='')
+    """ 初期順列の表示 """
     number = is_prime(digit, twins)
     if number:
         primcnt += 1
         #print(digit, " ", number)
-    #if serno >= stopcnt:
-    #    break
-print("\nprimcnt=%d,maxSer=%d" % (primcnt, serno))
-endtm = datetime.datetime.now()
-proc_time = time.perf_counter_ns() - start_time
-print("FINISH " + str(endtm)[0:19])
-diftm = endtm - bgntm
-print("PROCESS TIME %d sec [precise:%d msec]" % (diftm.seconds, proc_time//1000000))
+    """次の順列を生成し、表示を繰り返す """
+    while genperm(digit, dgtlen):
+        # 重複回避
+        if digit.index(10) < digit.index(twins):
+            continue
+        if (serno % 20000) == 1:
+            if (serno % 1000000) == 1:
+                print()
+            print("*", end='')
+        serno += 1
+        number = is_prime(digit, twins)
+        if number:
+            primcnt += 1
+            #print(digit, " ", number)
+        #if serno >= stopcnt:
+        #    break
+    print("\nprimcnt=%d,maxSer=%d" % (primcnt, serno))
+    endtm = datetime.datetime.now()
+    proc_time = time.perf_counter_ns() - start_time
+    print("FINISH " + str(endtm)[0:19])
+    diftm = endtm - bgntm
+    print("PROCESS TIME %d sec [precise:%d msec]" % (diftm.seconds, proc_time//1000000))
+
+if __name__=='__main__':
+    main()
